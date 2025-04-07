@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Móveis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Loja de Móveis</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2>Bem-vindo à nossa loja de móveis!</h2>
+        <p>Aqui você encontra os melhores móveis para a sua casa.</p>
+    </section>
+
+    <section id="produtos">
+        <h2>Produtos em Destaque</h2>
+        <div class="produtos">
+            <div class="produto">
+                <img src="https://via.placeholder.com/300x200" alt="Sofá">
+                <h3>Sofá Confortável</h3>
+                <p>Preço: R$ 1.200,00</p>
+                <button class="comprar-btn" onclick="comprarProduto('Sofá Confortável')">Comprar</button>
+            </div>
+            <div class="produto">
+                <img src="https://via.placeholder.com/300x200" alt="Mesa de Jantar">
+                <h3>Mesa de Jantar</h3>
+                <p>Preço: R$ 800,00</p>
+                <button class="comprar-btn" onclick="comprarProduto('Mesa de Jantar')">Comprar</button>
+            </div>
+            <div class="produto">
+                <img src="https://via.placeholder.com/300x200" alt="Cadeira">
+                <h3>Cadeira Elegante</h3>
+                <p>Preço: R$ 300,00</p>
+                <button class="comprar-btn" onclick="comprarProduto('Cadeira Elegante')">Comprar</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato">
+        <h2>Entre em Contato</h2>
+        <p>Email: contato@lojamoveis.com</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Loja de Móveis. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
