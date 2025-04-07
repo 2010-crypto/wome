@@ -1,4 +1,4 @@
-* Resetando alguns estilos padrões */
+/* Resetando alguns estilos padrões */
 * {
     margin: 0;
     padding: 0;
@@ -96,11 +96,3 @@ footer {
     padding: 10px 0;
     text-align: center;
 }
-3. Arquivo script.js (JavaScript)
-Aqui está o script básico para interatividade, mostrando um alerta quando o usuário clica no botão "Comprar".
-
-javascript
-Copiar
-Editar
-function comprarProduto(produto) {
-    alert(`Você comprou o produto: ${produto}`);
