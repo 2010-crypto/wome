@@ -3,60 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja de Móveis</title>
+    <title>Transformação de Ambientes</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>Loja de Móveis</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#produtos">Produtos</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="email-section">
+        <h1>Bem-vindo ao Transformador de Ambientes!</h1>
+        <p>Entre com seu e-mail para começar:</p>
+        <form id="email-form">
+            <input type="email" id="user-email" placeholder="Digite seu e-mail" required />
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
 
-    <section id="home">
-        <h2>Bem-vindo à nossa loja de móveis!</h2>
-        <p>Aqui você encontra os melhores móveis para a sua casa.</p>
-    </section>
+    <div id="photo-upload-section" style="display:none;">
+        <h2>Envie uma foto do seu ambiente:</h2>
+        <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
+        <img id="result-image" style="max-width: 100%; margin-top: 20px;">
+    </div>
 
-    <section id="produtos">
-        <h2>Produtos em Destaque</h2>
-        <div class="produtos">
-            <div class="produto">
-                <img src="https://via.placeholder.com/300x200" alt="Sofá">
-                <h3>Sofá Confortável</h3>
-                <p>Preço: R$ 1.200,00</p>
-                <button class="comprar-btn" onclick="comprarProduto('Sofá Confortável')">Comprar</button>
-            </div>
-            <div class="produto">
-                <img src="https://via.placeholder.com/300x200" alt="Mesa de Jantar">
-                <h3>Mesa de Jantar</h3>
-                <p>Preço: R$ 800,00</p>
-                <button class="comprar-btn" onclick="comprarProduto('Mesa de Jantar')">Comprar</button>
-            </div>
-            <div class="produto">
-                <img src="https://via.placeholder.com/300x200" alt="Cadeira">
-                <h3>Cadeira Elegante</h3>
-                <p>Preço: R$ 300,00</p>
-                <button class="comprar-btn" onclick="comprarProduto('Cadeira Elegante')">Comprar</button>
-            </div>
-        </div>
-    </section>
+    <div id="style-selection-section" style="display:none;">
+        <h2>Escolha o estilo para seu ambiente:</h2>
+        <select id="style-select">
+            <option value="classic">Clássico</option>
+            <option value="modern">Moderno</option>
+            <option value="vintage">Vintage</option>
+        </select>
+        <button onclick="simulateStyle()">Aplicar Estilo</button>
+    </div>
 
-    <section id="contato">
-        <h2>Entre em Contato</h2>
-        <p>Email: contato@lojamoveis.com</p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Loja de Móveis. Todos os direitos reservados.</p>
-    </footer>
+    <div id="result-section" style="display:none;">
+        <h2>Resultado Final:</h2>
+        <img id="final-result" style="max-width: 100%; margin-top: 20px;">
+    </div>
 
     <script src="script.js"></script>
 </body>
