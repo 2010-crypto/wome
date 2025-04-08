@@ -1,38 +1,60 @@
 const express = require('express');
-const fetch = require('node-fetch');
+const cors = require('cors'); // Importa o CORS
+const fetch = require('node-fetch'); // Caso precise usar fetch no servidor
 const app = express();
-const port = process.env.PORT || 10000;
 
-app.use(express.json());
-app.use(express.static('public'));
+// Habilita CORS para todas as origens
+app.use(cors());
 
-const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
-const MODEL_ID = process.env.REPLICATE_MODEL_ID; // O model ID será lido do arquivo .env
+// Ou, se você quiser permitir apenas o domínio do seu GitHub Pages:
+// app.use(cors({ origin: 'https://2010-crypto.github.io' }));
 
+app.use(express.json());  // Para permitir o corpo da requisição como JSON
+
+// Definindo a chave da API e o Model ID
+const apiKey = process.env.REPLICATE_API_KEY;
+const modelId = process.env.REPLICATE_MODEL_ID;
+
+// Rota para gerar a imagem com o estilo
 app.post('/predictions', async (req, res) => {
   const { image, style } = req.body;
-
-  const response = await fetch('https://api.replicate.com/v1/predictions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${REPLICATE_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      version: MODEL_ID,
-      input: { image, style },
-    }),
-  });
-
-  const data = await response.json();
   
-  if (data && data.output_url) {
-    res.json({ output_url: data.output_url });
-  } else {
-    res.status(500).json({ error: 'Não foi possível gerar a imagem.' });
+  // Verificar se os dados necessários foram enviados
+  if (!image || !style) {
+    return res.status(400).json({ error: 'Imagem ou estilo não fornecido' });
+  }
+
+  try {
+    // Aqui você iria integrar com a API da Replicate
+    const response = await fetch('https://api.replicate.com/v1/predictions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        version: modelId,
+        input: {
+          image: image,
+          style: style
+        }
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return res.json({ output_url: data.output_url });  // Retorna a URL da imagem gerada
+    } else {
+      return res.status(500).json({ error: data.error || 'Erro ao gerar imagem' });
+    }
+  } catch (error) {
+    console.error('Erro ao integrar com a API:', error);
+    return res.status(500).json({ error: 'Erro interno ao processar a solicitação' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+// Porta onde o servidor irá rodar
+app.listen(10000, () => {
+  console.log('Servidor rodando na porta 10000');
 });
