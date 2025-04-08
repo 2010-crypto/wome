@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
+  background-color: #f4f4f4;
   padding: 20px;
-  background-color: #f3f3f3;
 }
 
 h1 {
@@ -13,13 +13,24 @@ form {
   margin: 20px 0;
 }
 
-input, select, button {
-  margin: 10px;
+input[type="file"], select {
   padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
   font-size: 16px;
 }
 
-#result img {
+button:hover {
+  background-color: #45a049;
+}
+
+#output {
   margin-top: 20px;
-  max-width: 100%;
 }
