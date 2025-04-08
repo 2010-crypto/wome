@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
-const MODEL_ID = "r8_MF4Pae99TS7zxlhgkXFU5fwrRMC0qb20UXzOq"; // O seu model ID da Replicate
+const MODEL_ID = process.env.REPLICATE_MODEL_ID; // O model ID será lido do arquivo .env
 
 app.post('/predictions', async (req, res) => {
   const { image, style } = req.body;
