@@ -8,9 +8,9 @@
 </head>
 <body>
   <h1>Estilize Sua Sala!</h1>
-  <form id="photoForm">
-    <input type="file" id="photoInput" accept="image/*" required />
-    <select id="styleSelect" required>
+  <form id="upload-form">
+    <input type="file" id="image" accept="image/*" required />
+    <select id="style" required>
       <option value="" disabled selected>Escolha um estilo</option>
       <option value="moderno">Moderno</option>
       <option value="clássico">Clássico</option>
@@ -20,7 +20,7 @@
     </select>
     <button type="submit">Transformar</button>
   </form>
-  <div id="result"></div>
+  <div id="output"></div>
   <script src="script.js"></script>
 </body>
 </html>
