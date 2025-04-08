@@ -1,2 +1,5 @@
+# Ignorar o arquivo .env com a chave API
 .env
+
+# Ignorar a pasta node_modules (dependendo do seu ambiente Node.js)
 node_modules/
