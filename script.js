@@ -1,71 +1,30 @@
-const form = document.getElementById('form');
-const imageInput = document.getElementById('image-input');
-const styleSelect = document.getElementById('style-select');
-const resultImage = document.getElementById('result-image');
-
-form.addEventListener('submit', async (e) => {
+document.getElementById('photoForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
-  const file = imageInput.files[0];
-  const style = styleSelect.value;
+  const file = document.getElementById('photoInput').files[0];
+  const style = document.getElementById('styleSelect').value;
 
-  if (!file || !style) {
-    alert('Por favor, envie uma imagem e escolha um estilo.');
-    return;
-  }
+  if (!file || !style) return;
 
   const reader = new FileReader();
-
   reader.onloadend = async () => {
-    const base64Image = reader.result.split(',')[1];
+    const imageBase64 = reader.result.split(',')[1];
 
     try {
-      const response = await fetch('https://api.replicate.com/v1/predictions', {
+      const response = await fetch('/generate', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Token r8_VwlDcXGfrbOcFDlCrFUwk2y6cqIjqHw1OVHWw',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          version: "db21e45a3c0e7c6e807e6dffb2159b20f47230b2f6b089f31c6d24a930eeb220",
-          input: {
-            image: `data:image/jpeg;base64,${base64Image}`,
-            prompt: `interior de sala de estar com estilo ${style}`,
-            a_prompt: "design de interiores bonito e limpo",
-            n_prompt: "bagunça, baixa qualidade, borrado"
-          }
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: imageBase64, style })
       });
 
-      const json = await response.json();
-
-      if (json.urls && json.urls.get) {
-        const getUrl = json.urls.get;
-
-        // Aguardar o processamento
-        let generatedImage = null;
-        while (!generatedImage) {
-          const result = await fetch(getUrl, {
-            headers: {
-              'Authorization': 'Token r8_VwlDcXGfrbOcFDlCrFUwk2y6cqIjqHw1OVHWw'
-            }
-          });
-          const resultData = await result.json();
-          if (resultData.status === 'succeeded') {
-            generatedImage = resultData.output[0];
-          } else if (resultData.status === 'failed') {
-            throw new Error('Erro ao processar a imagem.');
-          } else {
-            await new Promise(res => setTimeout(res, 2000)); // espera 2 segundos
-          }
-        }
-
-        resultImage.src = generatedImage;
-        resultImage.style.display = 'block';
+      const data = await response.json();
+      if (data.output) {
+        document.getElementById('result').innerHTML = `<img src="${data.output}" alt="Imagem transformada" />`;
+      } else {
+        document.getElementById('result').innerText = 'Erro ao gerar imagem';
       }
     } catch (error) {
       console.error('Erro ao integrar com a API:', error);
-      alert('Erro ao processar a imagem. Tente novamente.');
     }
   };
 
