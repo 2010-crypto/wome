@@ -1,8 +1,8 @@
-document.getElementById('photoForm').addEventListener('submit', function (e) {
+document.getElementById('upload-form').addEventListener('submit', function (e) {
   e.preventDefault();
 
-  const fileInput = document.getElementById('photoInput');
-  const style = document.getElementById('styleSelect').value;
+  const fileInput = document.getElementById('image');
+  const style = document.getElementById('style').value;
 
   if (!fileInput.files[0]) {
     alert("Por favor, selecione uma imagem.");
@@ -23,7 +23,7 @@ document.getElementById('photoForm').addEventListener('submit', function (e) {
     })
       .then(response => response.json())
       .then(data => {
-        const output = document.getElementById('result');
+        const output = document.getElementById('output');
         if (data.output_url) {
           output.innerHTML = `<h3>Resultado:</h3><img src="${data.output_url}" alt="Imagem gerada" style="max-width: 100%; border-radius: 10px;" />`;
         } else {
