@@ -1,63 +1,56 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+// Carregando as variáveis de ambiente do arquivo .env
 require('dotenv').config();
+
+// Importando as dependências
+const express = require('express');
 const fetch = require('node-fetch');
+const path = require('path');
 
+// Criando a aplicação Express
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('.'));
+const port = process.env.PORT || 3000;
 
-const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
-const MODEL_ID = process.env.MODEL_ID;
+// Servindo arquivos estáticos (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/generate', async (req, res) => {
-  const { image, style } = req.body;
+// Corpo das requisições
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-  try {
-    const response = await fetch('https://api.replicate.com/v1/predictions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${REPLICATE_API_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        version: MODEL_ID,
-        input: {
-          image: `data:image/jpeg;base64,${image}`,
-          prompt: `Transformar a decoração da sala para o estilo ${style}`
-        }
-      })
-    });
+// Rota para a integração com a API da Replicate
+app.post('/api/prediction', async (req, res) => {
+    const imageData = req.body.image; // imagem enviada pelo usuário
 
-    const data = await response.json();
-    const predictionId = data.id;
+    // Chave de API da Replicate, obtida do arquivo .env
+    const apiKey = process.env.REPLICATE_API_KEY;
 
-    // Espera o resultado final
-    let outputUrl = null;
-    while (!outputUrl) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+        // Fazendo a requisição para a API da Replicate
+        const response = await fetch('https://api.replicate.com/v1/predictions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${apiKey}`,  // Usando a chave da variável de ambiente
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                version: 'r8_MF4Pae99TS7zxlhgkXFU5fwrRMC0qb20UXzOq', // Substitua pelo seu model_id da Replicate
+                input: {
+                    image: imageData,
+                }
+            })
+        });
 
-      const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
-        headers: {
-          'Authorization': `Token ${REPLICATE_API_TOKEN}`
-        }
-      });
+        const data = await response.json();
 
-      const pollData = await pollResponse.json();
-      if (pollData.output) {
-        outputUrl = pollData.output[0];
-      }
+        // Enviar a resposta da API para o frontend
+        res.json(data);
+    } catch (error) {
+        console.error('Erro ao integrar com a API:', error);
+        res.status(500).json({ error: 'Erro ao processar a imagem' });
     }
-
-    res.json({ output: outputUrl });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao chamar a API da IA' });
-  }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// Inicializando o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+});
