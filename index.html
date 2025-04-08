@@ -3,40 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Transforme sua Sala</title>
+  <title>Transformador de Estilo de Interiores</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
-    <h1>Transforme sua Sala com Estilo</h1>
-    <form id="form">
-      <label for="image-input">Envie a foto do ambiente:</label>
-      <input type="file" id="image-input" accept="image/*" required />
-
-      <label for="style-select">Escolha o estilo desejado:</label>
-      <select id="style-select" required>
-        <option value="">Escolha um estilo</option>
-        <option value="modern">Moderno</option>
-        <option value="classic">Clássico</option>
-        <option value="minimalist">Minimalista</option>
-        <option value="industrial">Industrial</option>
-        <option value="rustic">Rústico</option>
-        <option value="scandinavian">Escandinavo</option>
-        <option value="retro">Retrô</option>
-        <option value="boho">Boho</option>
-        <option value="tropical">Tropical</option>
-        <option value="art_deco">Art Déco</option>
-      </select>
-
-      <button type="submit">Transformar Ambiente</button>
-    </form>
-
-    <div class="image-area">
-      <h2>Resultado</h2>
-      <img id="result-image" src="" alt="Imagem transformada" style="display: none;" />
-    </div>
-  </div>
-
+  <h1>Estilize Sua Sala!</h1>
+  <form id="photoForm">
+    <input type="file" id="photoInput" accept="image/*" required />
+    <select id="styleSelect" required>
+      <option value="" disabled selected>Escolha um estilo</option>
+      <option value="moderno">Moderno</option>
+      <option value="clássico">Clássico</option>
+      <option value="minimalista">Minimalista</option>
+      <option value="rústico">Rústico</option>
+      <option value="industrial">Industrial</option>
+    </select>
+    <button type="submit">Transformar</button>
+  </form>
+  <div id="result"></div>
   <script src="script.js"></script>
 </body>
 </html>
