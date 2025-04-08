@@ -1,56 +1,38 @@
-// Carregando as variáveis de ambiente do arquivo .env
-require('dotenv').config();
-
-// Importando as dependências
 const express = require('express');
 const fetch = require('node-fetch');
-const path = require('path');
-
-// Criando a aplicação Express
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
-// Servindo arquivos estáticos (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Corpo das requisições
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-// Rota para a integração com a API da Replicate
-app.post('/api/prediction', async (req, res) => {
-    const imageData = req.body.image; // imagem enviada pelo usuário
+const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
+const MODEL_ID = "r8_MF4Pae99TS7zxlhgkXFU5fwrRMC0qb20UXzOq"; // O seu model ID da Replicate
 
-    // Chave de API da Replicate, obtida do arquivo .env
-    const apiKey = process.env.REPLICATE_API_KEY;
+app.post('/predictions', async (req, res) => {
+  const { image, style } = req.body;
 
-    try {
-        // Fazendo a requisição para a API da Replicate
-        const response = await fetch('https://api.replicate.com/v1/predictions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Token ${apiKey}`,  // Usando a chave da variável de ambiente
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                version: 'r8_MF4Pae99TS7zxlhgkXFU5fwrRMC0qb20UXzOq', // Substitua pelo seu model_id da Replicate
-                input: {
-                    image: imageData,
-                }
-            })
-        });
+  const response = await fetch('https://api.replicate.com/v1/predictions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${REPLICATE_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      version: MODEL_ID,
+      input: { image, style },
+    }),
+  });
 
-        const data = await response.json();
-
-        // Enviar a resposta da API para o frontend
-        res.json(data);
-    } catch (error) {
-        console.error('Erro ao integrar com a API:', error);
-        res.status(500).json({ error: 'Erro ao processar a imagem' });
-    }
+  const data = await response.json();
+  
+  if (data && data.output_url) {
+    res.json({ output_url: data.output_url });
+  } else {
+    res.status(500).json({ error: 'Não foi possível gerar a imagem.' });
+  }
 });
 
-// Inicializando o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
+  console.log(`Servidor rodando na porta ${port}`);
 });
