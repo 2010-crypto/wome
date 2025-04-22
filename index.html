@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transformador de Estilo de Imagem</title>
+  <title>Transformador de Estilos</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Transforme a Sua Imagem com Estilo Artístico!</h1>
-  <form id="upload-form">
-    <input type="file" id="image" accept="image/*" required />
-    <select id="style" required>
-      <option value="" disabled selected>Escolha um estilo</option>
-      <option value="starry_night">Noite Estrelada</option>
-      <option value="mosaic">Mosaico</option>
-      <option value="udnie">Udnie</option>
-    </select>
-    <button type="submit">Transformar</button>
-  </form>
-  <div id="output"></div>
+  <h1>Transforme sua imagem com estilo!</h1>
+  
+  <input type="file" id="imageInput" />
+  <button id="submitButton">Enviar Imagem</button>
+
+  <div id="result">
+    <h2>Resultado:</h2>
+    <img id="outputImage" alt="Imagem transformada" />
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
