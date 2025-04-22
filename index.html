@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estilize Sua Sala</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Transformador de Estilo de Interiores</h1>
+    <form id="upload-form">
+      <input type="file" id="image" accept="image/*" required />
+      <select id="style" required>
+        <option value="" disabled selected>Escolha um estilo</option>
+        <option value="moderno">Moderno</option>
+        <option value="clássico">Clássico</option>
+        <option value="minimalista">Minimalista</option>
+        <option value="rústico">Rústico</option>
+        <option value="industrial">Industrial</option>
+      </select>
+      <button type="submit">Transformar</button>
+    </form>
+    <div id="output"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
