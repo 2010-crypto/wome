@@ -1,40 +1,49 @@
-document.getElementById('upload-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const fileInput = document.getElementById('image');
-  const style = document.getElementById('style').value;
-
-  if (!fileInput.files[0]) {
-    alert("Por favor, selecione uma imagem.");
+document.getElementById("submitButton").addEventListener("click", async function() {
+  const fileInput = document.getElementById("imageInput");
+  const file = fileInput.files[0];
+  
+  if (!file) {
+    alert("Por favor, escolha uma imagem para enviar.");
     return;
   }
 
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    const formData = new FormData();
-    formData.append('image', fileInput.files[0]);
+  // Exibe um carregamento enquanto a imagem é processada
+  document.getElementById("submitButton").disabled = true;
+  document.getElementById("submitButton").textContent = "Processando...";
 
-    fetch('https://api.deepai.org/api/fast-style-transfer', {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    // Envia a requisição para a API do DeepAI
+    const response = await fetch('https://api.deepai.org/api/fast-style-transfer', {
       method: 'POST',
       headers: {
-        'api-key': 'ae5b44b4-5046-42ec-801e-dad13915fd65',  // sua API key aqui
+        'Api-Key': '4e94e435-1fd9-4352-adb2-b8ebde0ebd47',  // Substitua pela sua chave API
       },
       body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      const output = document.getElementById('output');
-      if (data.output_url) {
-        output.innerHTML = `<h3>Resultado:</h3><img src="${data.output_url}" alt="Imagem gerada" style="max-width: 100%; border-radius: 10px;" />`;
-      } else {
-        output.innerHTML = `<p>Não foi possível gerar a imagem. Tente novamente.</p>`;
-      }
-    })
-    .catch(error => {
-      console.error('Erro ao integrar com a API:', error);
-      alert("Erro ao processar imagem. Verifique sua conexão ou tente novamente.");
     });
-  };
 
-  reader.readAsDataURL(fileInput.files[0]);
+    if (!response.ok) {
+      throw new Error('Erro ao processar a imagem. Verifique sua conexão ou tente novamente.');
+    }
+
+    const result = await response.json();
+
+    // Verifica se a resposta da API contém o link da imagem
+    if (result.output_url) {
+      document.getElementById("outputImage").src = result.output_url;
+      document.getElementById("result").style.display = "block";  // Exibe a seção de resultados
+    } else {
+      throw new Error('Erro: A API não retornou a imagem processada.');
+    }
+  } catch (error) {
+    // Exibe mensagem de erro caso a requisição falhe
+    alert(error.message);
+    console.error(error);
+  } finally {
+    // Restaura o botão de envio
+    document.getElementById("submitButton").disabled = false;
+    document.getElementById("submitButton").textContent = "Enviar Imagem";
+  }
 });
